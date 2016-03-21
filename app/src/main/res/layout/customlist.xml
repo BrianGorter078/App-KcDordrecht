@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="#004B96"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="end"
+        android:textSize="70dp"
+        android:id="@+id/textxx"
+        android:textColor="#fff"
+        android:layout_marginRight="2dp"
+        android:text="15"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="KC Dordrecht"
+        android:textColor="#fff"
+        android:id="@+id/textView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignTop="@+id/textxx"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Clubblad"
+        android:textColor="#fff"
+        android:layout_marginRight="10dp"
+        android:id="@+id/textView2"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/textxx"
+        android:layout_toStartOf="@+id/textxx" />
+
+</RelativeLayout>

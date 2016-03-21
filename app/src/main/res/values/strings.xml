@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Clubblad</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_clubblad">Clubblad</string>
+    <string name="nav_item_zaalboek">Tweets</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_clubblad</item>
+        <item>@string/nav_item_zaalboek</item>
+    </string-array>
+
+    <string name="title_clubblad">Clubblad</string>
+    <string name="title_zaalboek">Tweets</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_html_viewer">htmlViewer</string>
+
+    <string name="hello_world">Hello world!</string>
+</resources>
