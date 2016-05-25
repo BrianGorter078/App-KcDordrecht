@@ -26,7 +26,7 @@ android {
         applicationId "nl.kcdordrecht.kcdordrechtnews"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 44
+        versionCode 45
         versionName "2"
 
         multiDexEnabled true
