@@ -1,6 +1,5 @@
 package nl.kcdordrecht.kcdordrechtnews.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 import com.brian.woonkamer.clubblad.R;
 import com.google.common.collect.Lists;
@@ -40,108 +38,84 @@ public class Clubblad extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_clubblad, container, false);
-
-        AssetManager assetManager = getActivity().getAssets();
-        try {
-
-
-            String[] paths = assetManager.list("");
-
-            for (int i = 0; i < paths.length; i++) {
-
-                if (paths[i].contains(".pdf")) {
-
-                    if(paths[i].contains("zaalboek"))
-                    {
-
-                    }
-                    else {
-
-
-                        paths[i] = paths[i].replace(".pdf", "");
-                        paths[i] = paths[i].replace("wb", "");
-                        clubbladen.add(paths[i]);
-                    }
-                }
-
-            }
-
-            final List<String> listview = Lists.reverse(clubbladen);
-            ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),R.layout.customlist,R.id.textxx, listview);
-
-
-
-
-            ListView lv = (ListView) rootView.findViewById(R.id.listView);
-            lv.setAdapter(adapter);
-
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    try {
-                        OpenClubblad(listview.get(position));
-                    }catch (IOException e)
-                    {}
-                }
-            });
-
-        }catch (IOException e)
-        {
-
-        }
-
-
+        getListOfFiles();
+        createListview(rootView);
         return rootView;
     }
 
 
+    public void getListOfFiles() {
+        AssetManager assetManager = getActivity().getAssets();
+        try {
+            String[] fileNames = assetManager.list("");
+            for (int i = 0; i < fileNames.length; i++) {
+                if (fileNames[i].contains(".pdf")) {
+                    if (fileNames[i].contains("wb")) {
+                        fileNames[i] = fileNames[i].replace(".pdf", "");
+                        fileNames[i] = fileNames[i].replace("wb", "");
+                        clubbladen.add(fileNames[i]);
+                    } else {
+
+                    }
+                }
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    public void createListview(View rootView) {
+        final List<String> clubbladenList = Lists.reverse(clubbladen);
+        ArrayAdapter clubbladenAdapter = new ArrayAdapter<>(getActivity(), R.layout.customlist, R.id.textxx, clubbladenList);
+
+        ListView clubbladenView = (ListView) rootView.findViewById(R.id.listView);
+        clubbladenView.setAdapter(clubbladenAdapter);
+
+        clubbladenView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                try {
+                    OpenClubblad(clubbladenList.get(position));
+                } catch (IOException e) {
+                }
+            }
+        });
+    }
 
 
-    public void OpenClubblad(String number) throws IOException {
+    public void OpenClubblad(String clubbladNumber) throws IOException {
 
         AssetManager assetManager = getActivity().getAssets();
-        InputStream in = null;
-        OutputStream out = null;
 
+        InputStream in;
+        OutputStream out;
 
-        File file = new File(getActivity().getFilesDir(),"wb" + number +".pdf");
-
-
+        String fileName = "wb" + clubbladNumber + ".pdf";
+        File file = new File(getActivity().getFilesDir(), "wb" + clubbladNumber + ".pdf");
 
         try {
-            in = assetManager.open("wb" + number +".pdf");
+            in = assetManager.open(fileName);
             out = getActivity().openFileOutput(file.getName(), Context.MODE_WORLD_READABLE);
 
             copyFile(in, out);
             in.close();
-            in = null;
             out.flush();
             out.close();
-            out = null;
+
+            openPDF(clubbladNumber);
+
+
         } catch (Exception e) {
             Log.e("tag", e.getMessage());
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(
-                Uri.parse("file://" + getActivity().getFilesDir() + "/wb" + number + ".pdf"),
-                "application/pdf");
 
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-
-        }
     }
-
 
 
     public void copyFile(InputStream in, OutputStream out) throws IOException {
@@ -155,6 +129,12 @@ public class Clubblad extends Fragment {
     }
 
 
+    public void openPDF(String number) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(
+                Uri.parse("file://" + getActivity().getFilesDir() + "/wb" + number + ".pdf"),
+                "application/pdf");
 
-
+        startActivity(intent);
+    }
 }

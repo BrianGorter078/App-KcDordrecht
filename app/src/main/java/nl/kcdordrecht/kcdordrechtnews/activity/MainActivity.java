@@ -10,24 +10,24 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.brian.woonkamer.clubblad.R;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+
 import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "cdCR5DyYwSx6mUxNfMTQ3vyLM";
     private static final String TWITTER_SECRET = "CRXIFipPtErs3hBkti118IEwMNGDpua8PHwE8YU4rukPI7G6oq";
 
-
-
+    Fragment clubbladFragment = null;
+    ListFragment twitterListfragment = null;
+    Fragment jaarplanningFragment = null;
+    String title;
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
@@ -35,23 +35,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+
+        authenticateTwitter();
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-            drawerFragment = (FragmentDrawer)
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-            drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-            drawerFragment.setDrawerListener(this);
-
-
-            // display the first navigation drawer view on app launch
-            displayView(0);
+        setupToolbar();
+        instantiateFragment(0);
+        displayFragment();
 
     }
     @Override
@@ -60,49 +51,86 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         MultiDex.install(this);
     }
 
-    
-
     @Override
     public void onDrawerItemSelected(View view, int position) {
-        displayView(position);
+        clubbladFragment = null;
+        twitterListfragment = null;
+        jaarplanningFragment = null;
+        instantiateFragment(position);
+        displayFragment();
     }
 
-    private void displayView(int position) {
-        Fragment fragment = null;
-        ListFragment fragmen = null;
-        String title = getString(R.string.app_name);
-        switch (position) {
+    public void authenticateTwitter(){
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
+    }
+
+    public void setupToolbar(){
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        drawerFragment = (FragmentDrawer)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+        drawerFragment.setDrawerListener(this);
+    }
+
+    public void instantiateFragment(int clickedItem){
+        title = getString(R.string.app_name);
+        switch (clickedItem) {
             case 0:
-                fragment = new Clubblad();
+                clubbladFragment = new Clubblad();
                 title = getString(R.string.title_clubblad);
                 break;
             case 1:
-                fragmen = new Tweets();
+                twitterListfragment = new Tweets();
                 title = getString(R.string.title_zaalboek);
                 break;
+            case 2:
+                jaarplanningFragment = new Jaarplanning();
+                title = getString(R.string.title_jaarplanning);
             default:
                 break;
         }
+    }
 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
+    private void displayFragment() {
+        if (twitterListfragment != null || clubbladFragment != null || jaarplanningFragment != null) {
+
+            FragmentTransaction fragmentTransaction = setupFragmentTransaction();
+            fragmentTransaction.replace(R.id.container_body,getInstantiatedFragment());
             fragmentTransaction.commit();
-
-            // set the toolbar title
             getSupportActionBar().setTitle(title);
-
         }
-        if (fragmen != null)
+
+    }
+
+    public FragmentTransaction  setupFragmentTransaction() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        return  fragmentTransaction;
+    }
+
+
+    public Fragment getInstantiatedFragment(){
+        Fragment instantiatedFragment;
+        if (twitterListfragment != null)
         {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragmen);
-            fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
+            instantiatedFragment = twitterListfragment;
         }
+
+        if (clubbladFragment != null)
+        {
+            instantiatedFragment = clubbladFragment;
+        }
+
+        else
+        {
+            instantiatedFragment = jaarplanningFragment;
+        }
+
+        return instantiatedFragment;
     }
 }
