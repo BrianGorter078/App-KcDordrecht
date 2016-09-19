@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     Fragment clubbladFragment = null;
     ListFragment twitterListfragment = null;
-    Fragment jaarplanningFragment = null;
     String title;
 
     private Toolbar mToolbar;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public void onDrawerItemSelected(View view, int position) {
         clubbladFragment = null;
         twitterListfragment = null;
-        jaarplanningFragment = null;
         instantiateFragment(position);
         displayFragment();
     }
@@ -88,16 +86,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 twitterListfragment = new Tweets();
                 title = getString(R.string.title_zaalboek);
                 break;
-            case 2:
-                jaarplanningFragment = new Jaarplanning();
-                title = getString(R.string.title_jaarplanning);
-            default:
-                break;
         }
     }
-
     private void displayFragment() {
-        if (twitterListfragment != null || clubbladFragment != null || jaarplanningFragment != null) {
+        if (twitterListfragment != null || clubbladFragment != null) {
 
             FragmentTransaction fragmentTransaction = setupFragmentTransaction();
             fragmentTransaction.replace(R.id.container_body,getInstantiatedFragment());
@@ -121,14 +113,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             instantiatedFragment = twitterListfragment;
         }
 
-        if (clubbladFragment != null)
-        {
-            instantiatedFragment = clubbladFragment;
-        }
-
         else
         {
-            instantiatedFragment = jaarplanningFragment;
+            instantiatedFragment = clubbladFragment;
         }
 
         return instantiatedFragment;

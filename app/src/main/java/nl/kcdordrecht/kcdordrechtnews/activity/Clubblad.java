@@ -55,14 +55,18 @@ public class Clubblad extends Fragment {
             String[] fileNames = assetManager.list("");
             for (int i = 0; i < fileNames.length; i++) {
                 if (fileNames[i].contains(".pdf")) {
-                    if (fileNames[i].contains("wb")) {
-                        fileNames[i] = fileNames[i].replace(".pdf", "");
-                        fileNames[i] = fileNames[i].replace("wb", "");
-                        clubbladen.add(fileNames[i]);
-                    } else {
 
+                    System.out.println(fileNames.length + " " + fileNames[i]);
+                    if (fileNames[i].contains("blad")) {
+                        fileNames[i] = fileNames[i].replace(".pdf", "");
+                        clubbladen.add(fileNames[i]);
+                    }
+                    if(fileNames[i].contains("Jaarplanning")){
+                        fileNames[i] = fileNames[i].replace(".pdf", "");
+                        clubbladen.add(fileNames[i]);
                     }
                 }
+                System.out.println(fileNames.length + " " + fileNames[i]);
             }
         } catch (IOException e) {
         }
@@ -95,8 +99,8 @@ public class Clubblad extends Fragment {
         InputStream in;
         OutputStream out;
 
-        String fileName = "wb" + clubbladNumber + ".pdf";
-        File file = new File(getActivity().getFilesDir(), "wb" + clubbladNumber + ".pdf");
+        String fileName = clubbladNumber + ".pdf";
+        File file = new File(getActivity().getFilesDir(), clubbladNumber + ".pdf");
 
         try {
             in = assetManager.open(fileName);
@@ -127,12 +131,10 @@ public class Clubblad extends Fragment {
 
 
     }
-
-
     public void openPDF(String number) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
-                Uri.parse("file://" + getActivity().getFilesDir() + "/wb" + number + ".pdf"),
+                Uri.parse("file://" + getActivity().getFilesDir() + "/"+ number + ".pdf"),
                 "application/pdf");
 
         startActivity(intent);

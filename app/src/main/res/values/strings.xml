@@ -7,17 +7,14 @@
 
     <string name="nav_item_clubblad">Clubblad</string>
     <string name="nav_item_zaalboek">Tweets</string>
-    <string name="nav_item_jaarplanning">Jaarplanning</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_clubblad</item>
         <item>@string/nav_item_zaalboek</item>
-        <item>@string/nav_item_jaarplanning</item>
     </string-array>
 
     <string name="title_clubblad">Clubblad</string>
     <string name="title_zaalboek">Tweets</string>
-    <string name="title_jaarplanning">Jaarplanning</string>
 
 </resources>
