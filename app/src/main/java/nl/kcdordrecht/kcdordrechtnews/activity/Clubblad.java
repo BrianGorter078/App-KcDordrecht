@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class Clubblad extends Fragment {
 
-    final ArrayList<String> clubbladen = new ArrayList<>();
+    private final ArrayList<String> clubbladen = new ArrayList<>();
 
     public Clubblad() {
         // Required empty public constructor
@@ -49,7 +49,7 @@ public class Clubblad extends Fragment {
     }
 
 
-    public void getListOfFiles() {
+    private void getListOfFiles() {
         AssetManager assetManager = getActivity().getAssets();
         try {
             String[] fileNames = assetManager.list("");
@@ -61,7 +61,7 @@ public class Clubblad extends Fragment {
                         fileNames[i] = fileNames[i].replace(".pdf", "");
                         clubbladen.add(fileNames[i]);
                     }
-                    if(fileNames[i].contains("Jaarplanning")){
+                    if(fileNames[i].contains("Jaarplanning")  || fileNames[i].contains("Zaalboek")){
                         fileNames[i] = fileNames[i].replace(".pdf", "");
                         clubbladen.add(fileNames[i]);
                     }
@@ -72,7 +72,7 @@ public class Clubblad extends Fragment {
         }
     }
 
-    public void createListview(View rootView) {
+    private void createListview(View rootView) {
         final List<String> clubbladenList = Lists.reverse(clubbladen);
         ArrayAdapter clubbladenAdapter = new ArrayAdapter<>(getActivity(), R.layout.customlist, R.id.textxx, clubbladenList);
 
@@ -92,7 +92,7 @@ public class Clubblad extends Fragment {
     }
 
 
-    public void OpenClubblad(String clubbladNumber) throws IOException {
+    private void OpenClubblad(String clubbladNumber) throws IOException {
 
         AssetManager assetManager = getActivity().getAssets();
 
@@ -122,7 +122,7 @@ public class Clubblad extends Fragment {
     }
 
 
-    public void copyFile(InputStream in, OutputStream out) throws IOException {
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
         while ((read = in.read(buffer)) != -1) {
@@ -131,7 +131,7 @@ public class Clubblad extends Fragment {
 
 
     }
-    public void openPDF(String number) {
+    private void openPDF(String number) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
                 Uri.parse("file://" + getActivity().getFilesDir() + "/"+ number + ".pdf"),

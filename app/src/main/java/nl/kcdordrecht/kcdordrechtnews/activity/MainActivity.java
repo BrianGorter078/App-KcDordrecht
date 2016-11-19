@@ -24,12 +24,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private static final String TWITTER_KEY = "cdCR5DyYwSx6mUxNfMTQ3vyLM";
     private static final String TWITTER_SECRET = "CRXIFipPtErs3hBkti118IEwMNGDpua8PHwE8YU4rukPI7G6oq";
 
-    Fragment clubbladFragment = null;
-    ListFragment twitterListfragment = null;
-    String title;
-
-    private Toolbar mToolbar;
-    private FragmentDrawer drawerFragment;
+    private Fragment clubbladFragment = null;
+    private ListFragment twitterListfragment = null;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +55,24 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         displayFragment();
     }
 
-    public void authenticateTwitter(){
+    private void authenticateTwitter(){
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
     }
 
-    public void setupToolbar(){
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void setupToolbar(){
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
+        FragmentDrawer drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
     }
 
-    public void instantiateFragment(int clickedItem){
+    private void instantiateFragment(int clickedItem){
         title = getString(R.string.app_name);
         switch (clickedItem) {
             case 0:
@@ -99,14 +96,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     }
 
-    public FragmentTransaction  setupFragmentTransaction() {
+    private FragmentTransaction  setupFragmentTransaction() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        return  fragmentTransaction;
+        return fragmentManager.beginTransaction();
     }
 
 
-    public Fragment getInstantiatedFragment(){
+    private Fragment getInstantiatedFragment(){
         Fragment instantiatedFragment;
         if (twitterListfragment != null)
         {

@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.22.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -19,14 +19,14 @@ configurations {
 }
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "nl.kcdordrecht.kcdordrechtnews"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 50
+        versionCode 56
         versionName "2"
 
         multiDexEnabled true
@@ -45,10 +45,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.google.android.gms:play-services:9.4.0'
     compile 'com.google.apis:google-api-services-calendar:v3-rev182-1.22.0'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:multidex:1.0.1'
     compile('com.twitter.sdk.android:twitter:1.13.0@aar') {
         transitive = true;
